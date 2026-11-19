@@ -15,7 +15,7 @@
             --high: #f43f5e;
             --done: #10b981;
         }
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, sans-serif; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; }
         body { background: var(--bg); color: var(--text); padding: 16px; line-height: 1.5; }
         .container { max-width: 900px; margin: 0 auto; }
         header {
@@ -26,8 +26,8 @@
             margin-bottom: 20px;
             text-align: center;
         }
-        h1 { font-size: 1.5rem; color: var(--accent); margin-bottom: 6px; }
-        .subtitle { color: var(--muted); font-size: 0.9rem; }
+        h1 { font-size: 1.45rem; color: var(--accent); margin-bottom: 6px; }
+        .subtitle { color: var(--muted); font-size: 0.88rem; }
         .progress-wrap {
             margin-top: 16px;
             background: #0f172a;
@@ -50,10 +50,10 @@
             color: var(--muted);
         }
         .phase-banner {
-            background: #1e293b;
+            background: var(--card);
             border-left: 4px solid var(--accent);
             padding: 12px 16px;
-            margin: 24px 0 12px;
+            margin: 22px 0 12px;
             border-radius: 6px;
             font-weight: 600;
             color: var(--accent);
@@ -66,9 +66,8 @@
             border-radius: 10px;
             padding: 14px 16px;
             margin-bottom: 12px;
-            transition: opacity 0.2s;
         }
-        .day-card.completed { opacity: 0.6; border-color: var(--done); }
+        .day-card.completed { opacity: 0.65; border-color: var(--done); }
         .day-header {
             display: flex;
             justify-content: space-between;
@@ -77,7 +76,7 @@
             border-bottom: 1px solid var(--border);
             padding-bottom: 6px;
         }
-        .date-title { font-weight: 700; font-size: 1.05rem; }
+        .date-title { font-weight: 700; font-size: 1rem; }
         .tag {
             font-size: 0.72rem;
             padding: 2px 8px;
@@ -101,22 +100,23 @@
             height: 17px;
             accent-color: var(--done);
             cursor: pointer;
+            flex-shrink: 0;
         }
-        .task-text { font-size: 0.95rem; }
+        .task-text { font-size: 0.94rem; }
         .task-item input:checked + .task-text {
             text-decoration: line-through;
             color: var(--muted);
         }
         .subj { font-weight: 600; color: var(--accent); }
-        .controls { display: flex; gap: 10px; justify-content: center; margin-top: 12px; }
+        .controls { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 14px; }
         button {
             background: #334155;
-            color: white;
+            color: #ffffff;
             border: none;
-            padding: 6px 12px;
+            padding: 7px 13px;
             border-radius: 6px;
             cursor: pointer;
-            font-size: 0.8rem;
+            font-size: 0.82rem;
         }
         button:hover { background: #475569; }
     </style>
@@ -125,16 +125,16 @@
 <div class="container">
     <header>
         <h1>HSC Test Exam Master Routine</h1>
-        <p class="subtitle">Nov 20, 2026 – Jan 4, 2027 | Priority Chapters First (Excluding HMath)</p>
+        <p class="subtitle">Nov 20, 2026 - Jan 4, 2027 | Priority Chapters First (Excluding HMath)</p>
         <div class="progress-wrap"><div class="progress-bar" id="progressBar"></div></div>
         <div class="stats">
             <span id="progressText">0% Completed</span>
             <span id="taskCount">0 / 0 Tasks</span>
         </div>
         <div class="controls">
-            <button onclick="filterCards('all')">All Days</button>
-            <button onclick="filterCards('pending')">Pending Only</button>
-            <button onclick="resetProgress()" style="background:#7f1d1d;">Reset Checkboxes</button>
+            <button type="button" onclick="filterCards('all')">All Days</button>
+            <button type="button" onclick="filterCards('pending')">Pending Only</button>
+            <button type="button" onclick="resetProgress()" style="background:#7f1d1d;">Reset Checkboxes</button>
         </div>
     </header>
 
@@ -143,230 +143,269 @@
 
 <script>
 const routineData = [
-    // PHASE 1: HIGH PRIORITY & BACKLOG CHAPTERS (Nov 20 - Dec 10)
-    { phase: "Phase 1: High-Priority & Unfinished CQ Chapters (Nov 20 – Dec 10)", phaseClass: "high", date: "Nov 20, 2026 (Fri)", tag: "Priority", tasks: [
-        { subj: "Phy 2nd:", text: "তাপগতিবিদ্যা (Thermodynamics) — Concept + Formula + CQ" },
-        { subj: "Chem 2nd:", text: "জৈব রসায়ন (Organic Chemistry - Part 1: Aliphatic & Reactions)" },
-        { subj: "Eng 2nd:", text: "Formal Letter & Informal Letter (Format + 2 Samples)" }
+    { phase: "Phase 1: High-Priority and Unfinished CQ Chapters (Nov 20 - Dec 10)", phaseClass: "high", date: "Nov 20, 2026 (Fri)", tag: "Priority", tasks: [
+        { subj: "Phy 2nd:", text: "তাপগতিবিদ্যা - Concept, Formula and CQ" },
+        { subj: "Chem 2nd:", text: "জৈব রসায়ন Part 1 - Aliphatic and Reactions" },
+        { subj: "Eng 2nd:", text: "Formal Letter and Informal Letter - Format and Practice" }
     ]},
     { date: "Nov 21, 2026 (Sat)", tag: "Priority", tasks: [
-        { subj: "Phy 2nd:", text: "তাপগতিবিদ্যা — Question Bank & Board CQ Practice" },
-        { subj: "Chem 2nd:", text: "জৈব রসায়ন (Part 2: Aromatic & Name Reactions)" },
-        { subj: "Bangla 2nd:", text: "উচ্চারণ ও বানানের নিয়ম (Rules + Board Questions)" }
+        { subj: "Phy 2nd:", text: "তাপগতিবিদ্যা - Question Bank and Board CQ" },
+        { subj: "Chem 2nd:", text: "জৈব রসায়ন Part 2 - Aromatic and Name Reactions" },
+        { subj: "Bangla 2nd:", text: "উচ্চারণ ও বানানের নিয়ম - Rules and Board Questions" }
     ]},
     { date: "Nov 22, 2026 (Sun)", tag: "Priority", tasks: [
-        { subj: "Phy 2nd:", text: "স্থির তড়িৎ (Electrostatics) — Concept + Gauss's Law + Potential" },
-        { subj: "Chem 2nd:", text: "জৈব রসায়ন (Part 3: Alcohol, Aldehyde, Ketone, Carboxylic Acid)" },
-        { subj: "Bio 1st:", text: "কোষ বিভাজন (Cell Division - Mitosis & Meiosis CQ)" }
+        { subj: "Phy 2nd:", text: "স্থির তড়িৎ - Gauss Law, Potential and Concept" },
+        { subj: "Chem 2nd:", text: "জৈব রসায়ন Part 3 - Alcohol, Aldehyde, Ketone and Acid" },
+        { subj: "Bio 1st:", text: "কোষ বিভাজন - Mitosis, Meiosis and CQ" }
     ]},
     { date: "Nov 23, 2026 (Mon)", tag: "Priority", tasks: [
-        { subj: "Phy 2nd:", text: "স্থির তড়িৎ — Capacitor Math & Board CQ Solve" },
-        { subj: "Chem 2nd:", text: "জৈব রসায়ন (Part 4: Identification Reactions & Board CQ)" },
-        { subj: "Eng 2nd:", text: "Report Writing & Paragraph (Recent Topics)" }
+        { subj: "Phy 2nd:", text: "স্থির তড়িৎ - Capacitor Math and Board CQ" },
+        { subj: "Chem 2nd:", text: "জৈব রসায়ন Part 4 - Identification and Board CQ" },
+        { subj: "Eng 2nd:", text: "Report Writing and Paragraph" }
     ]},
     { date: "Nov 24, 2026 (Tue)", tag: "Priority", tasks: [
-        { subj: "Phy 2nd:", text: "চল তড়িৎ (Current Electricity) — Kirchhoff's Law & Circuit Solve" },
-        { subj: "Chem 1st:", text: "কর্মমুখী রসায়ন (Vocational Chemistry — Concept + CQ)" },
-        { subj: "Bio 2nd:", text: "মানবদেহের প্রতিরক্ষা (Immunity — Concept + CQ)" }
+        { subj: "Phy 2nd:", text: "চল তড়িৎ - Kirchhoff Law and Circuit Solve" },
+        { subj: "Chem 1st:", text: "কর্মমুখী রসায়ন - Concept and CQ" },
+        { subj: "Bio 2nd:", text: "মানবদেহের প্রতিরক্ষা - Immunity Concept and CQ" }
     ]},
     { date: "Nov 25, 2026 (Wed)", tag: "Priority", tasks: [
-        { subj: "Phy 2nd:", text: "চল তড়িৎ — Potentiometer, Meter Bridge & Board CQ" },
-        { subj: "Chem 2nd:", text: "অর্থনৈতিক রসায়ন (Economic Chemistry — Cement, Glass, Pulp, Coal)" },
-        { subj: "Bangla 2nd:", text: "শব্দশ্রেণি ও উপসর্গ/সমাস (Grammar Practice)" }
+        { subj: "Phy 2nd:", text: "চল তড়িৎ - Meter Bridge, Potentiometer and Board CQ" },
+        { subj: "Chem 2nd:", text: "অর্থনৈতিক রসায়ন - Cement, Glass, Pulp and Coal" },
+        { subj: "Bangla 2nd:", text: "শব্দশ্রেণি, উপসর্গ ও সমাস" }
     ]},
     { date: "Nov 26, 2026 (Thu)", tag: "Priority", tasks: [
-        { subj: "Phy 2nd:", text: "ভৌত আলোকবিজ্ঞান (Physical Optics) — Interference, Diffraction & QB" },
-        { subj: "Chem 1st:", text: "গুণগত রসায়ন (Qualitative Chemistry — QB & Solubility Math)" },
-        { subj: "Bio 1st:", text: "কোষ ও কোষের গঠন (Cell Structure — QB & CQ Revision)" }
+        { subj: "Phy 2nd:", text: "ভৌত আলোকবিজ্ঞান - Interference, Diffraction and QB" },
+        { subj: "Chem 1st:", text: "গুণগত রসায়ন - QB and Solubility Math" },
+        { subj: "Bio 1st:", text: "কোষ ও কোষের গঠন - QB and CQ Revision" }
     ]},
     { date: "Nov 27, 2026 (Fri)", tag: "Priority", tasks: [
-        { subj: "Phy 2nd:", text: "মডার্ন পদার্থবিজ্ঞান (Modern Physics) — Relativity, Photoelectric & QB" },
-        { subj: "Chem 1st:", text: "মৌলের পর্যায়বৃত্ত ধর্ম ও রাসায়নিক বন্ধন (QB + Hybridization CQ)" },
-        { subj: "Eng 2nd:", text: "Right Form of Verbs & Completing Sentence (Board Practice)" }
+        { subj: "Phy 2nd:", text: "মডার্ন পদার্থবিজ্ঞান - Relativity, Photoelectric and QB" },
+        { subj: "Chem 1st:", text: "মৌলের পর্যায়বৃত্ত ধর্ম ও রাসায়নিক বন্ধন - QB and CQ" },
+        { subj: "Eng 2nd:", text: "Right Form of Verbs and Completing Sentence" }
     ]},
     { date: "Nov 28, 2026 (Sat)", tag: "Priority", tasks: [
-        { subj: "Phy 2nd:", text: "সেমিকন্ডাক্টর ও ইলেকট্রনিক্স (Semiconductor & Logic Gates — Concept + CQ)" },
-        { subj: "Chem 1st:", text: "রাসায়নিক পরিবর্তন (Chemical Change — Kp/Kc, pH, Buffer Math)" },
-        { subj: "Bio 2nd:", text: "জিনতত্ত্ব ও বিবর্তন (Genetics — Mendel's Laws, Sex-linked & ABO CQ)" }
+        { subj: "Phy 2nd:", text: "সেমিকন্ডাক্টর ও ইলেকট্রনিক্স - Logic Gates and CQ" },
+        { subj: "Chem 1st:", text: "রাসায়নিক পরিবর্তন - Kp, Kc, pH and Buffer Math" },
+        { subj: "Bio 2nd:", text: "জিনতত্ত্ব ও বিবর্তন - Genetics and ABO CQ" }
     ]},
     { date: "Nov 29, 2026 (Sun)", tag: "Priority", tasks: [
-        { subj: "Phy 1st:", text: "ভেক্টর (Vector — River-Boat, Rain-Man, Curl/Divergence QB)" },
-        { subj: "Chem 2nd:", text: "পরিবেশ রসায়ন (Environmental Chemistry — Gas Laws, Acid-Base, BOD/COD)" },
-        { subj: "Bangla 2nd:", text: "বাক্যতত্ত্ব ও শুদ্ধ প্রয়োগ (Board Questions)" }
+        { subj: "Phy 1st:", text: "ভেক্টর - River-Boat, Rain-Man and QB" },
+        { subj: "Chem 2nd:", text: "পরিবেশ রসায়ন - Gas Laws, Acid-Base and BOD-COD" },
+        { subj: "Bangla 2nd:", text: "বাক্যতত্ত্ব ও শুদ্ধ প্রয়োগ" }
     ]},
     { date: "Nov 30, 2026 (Mon)", tag: "Priority", tasks: [
-        { subj: "Phy 1st:", text: "গতিবিদ্যা (Dynamics — Projectile & Relative Motion QB)" },
-        { subj: "Chem 2nd:", text: "পরিমাণগত রসায়ন (Quantitative Chemistry — Titration & Redox Math)" },
-        { subj: "Bio 1st:", text: "অণুজীব (Microorganisms — Virus, Bacteria, Malaria CQ)" }
+        { subj: "Phy 1st:", text: "গতিবিদ্যা - Projectile and Relative Motion QB" },
+        { subj: "Chem 2nd:", text: "পরিমাণগত রসায়ন - Titration and Redox Math" },
+        { subj: "Bio 1st:", text: "অণুজীব - Virus, Bacteria and Malaria CQ" }
     ]},
     { date: "Dec 1, 2026 (Tue)", tag: "Priority", tasks: [
-        { subj: "Phy 1st:", text: "নিউটনিয়ান বলবিদ্যা (Newtonian Mechanics — Banking, Moment of Inertia QB)" },
-        { subj: "Chem 2nd:", text: "তড়িৎ রসায়ন (Electrochemistry — Nernst Equation, Faraday's Law QB)" },
-        { subj: "Eng 2nd:", text: "Narration & Modifiers (Board Rules + Practice)" }
+        { subj: "Phy 1st:", text: "নিউটনিয়ান বলবিদ্যা - Banking, Inertia and QB" },
+        { subj: "Chem 2nd:", text: "তড়িৎ রসায়ন - Nernst, Faraday Law and QB" },
+        { subj: "Eng 2nd:", text: "Narration and Modifiers" }
     ]},
     { date: "Dec 2, 2026 (Wed)", tag: "Priority", tasks: [
-        { subj: "Phy 1st:", text: "কাজ, ক্ষমতা ও শক্তি (Work, Power & Energy — Well/Spring Math QB)" },
-        { subj: "Bio 1st:", text: "উদ্ভিদ শারীরতত্ত্ব (Plant Physiology — Photosynthesis, Respiration, Transpiration)" },
+        { subj: "Phy 1st:", text: "কাজ, ক্ষমতা ও শক্তি - Well, Spring and QB" },
+        { subj: "Bio 1st:", text: "উদ্ভিদ শারীরতত্ত্ব - Photosynthesis and Respiration" },
         { subj: "Bangla 2nd:", text: "পারিভাষিক শব্দ ও বঙ্গানুবাদ" }
     ]},
     { date: "Dec 3, 2026 (Thu)", tag: "Priority", tasks: [
-        { subj: "Phy 1st:", text: "মহাকর্ষ ও অভিকর্ষ (Gravitation — Escape Velocity, Satellite QB)" },
-        { subj: "Bio 2nd:", text: "পরিপাক ও শোষণ + রক্ত ও সংবহন (Digestion & Blood Circulation CQ)" },
-        { subj: "Eng 2nd:", text: "Connectors, Synonym-Antonym & Punctuation" }
+        { subj: "Phy 1st:", text: "মহাকর্ষ ও অভিকর্ষ - Escape Velocity and QB" },
+        { subj: "Bio 2nd:", text: "পরিপাক ও শোষণ এবং রক্ত ও সংবহন - CQ" },
+        { subj: "Eng 2nd:", text: "Connectors, Synonym-Antonym and Punctuation" }
     ]},
     { date: "Dec 4, 2026 (Fri)", tag: "Priority", tasks: [
-        { subj: "Phy 1st:", text: "পর্যায়বৃত্ত গতি (Periodic Motion — Simple Pendulum & SHM QB)" },
-        { subj: "Bio 2nd:", text: "সমন্বয় ও নিয়ন্ত্রণ (Coordination — Eye, Ear, Endocrine Glands)" },
-        { subj: "Bangla 2nd:", text: "দিনলিপি, প্রতিবেদন ও ইমেইল/আবেদনপত্র (Format + Practice)" }
+        { subj: "Phy 1st:", text: "পর্যায়বৃত্ত গতি - Pendulum and SHM QB" },
+        { subj: "Bio 2nd:", text: "সমন্বয় ও নিয়ন্ত্রণ - Eye, Ear and Glands" },
+        { subj: "Bangla 2nd:", text: "দিনলিপি, প্রতিবেদন ও ইমেইল বা আবেদনপত্র" }
     ]},
     { date: "Dec 5, 2026 (Sat)", tag: "Priority", tasks: [
-        { subj: "Phy 1st:", text: "আদর্শ গ্যাস ও গ্যাসের গতিতত্ত্ব (Ideal Gas & Humidity Math QB)" },
-        { subj: "Bio 1st:", text: "জীবপ্রযুক্তি (Biotechnology — Tissue Culture, Recombinant DNA CQ)" },
-        { subj: "Eng 2nd:", text: "Gap Fillings (Article) & Words/Phrases (Quick Drill)" }
+        { subj: "Phy 1st:", text: "আদর্শ গ্যাস ও গ্যাসের গতিতত্ত্ব - Gas and Humidity QB" },
+        { subj: "Bio 1st:", text: "জীবপ্রযুক্তি - Tissue Culture, Recombinant DNA and CQ" },
+        { subj: "Eng 2nd:", text: "Gap Fillings (Article) and Words or Phrases" }
     ]},
     { date: "Dec 6, 2026 (Sun)", tag: "Priority", tasks: [
-        { subj: "Phy 1st:", text: "পদার্থের গাঠনিক ধর্ম + তরঙ্গ (Structural Properties & Waves QB)" },
-        { subj: "Bio 2nd:", text: "প্রাণীর বিভিন্নতা ও শ্রেণিবিন্যাস + প্রাণীর পরিচিতি (Hydra, Grasshopper, Rohu)" },
-        { subj: "Bangla 2nd:", text: "ভাবসম্প্রসারণ ও সারাংশ/সারমর্ম" }
+        { subj: "Phy 1st:", text: "পদার্থের গাঠনিক ধর্ম এবং তরঙ্গ - QB" },
+        { subj: "Bio 2nd:", text: "প্রাণীর বিভিন্নতা ও শ্রেণিবিন্যাস এবং প্রাণীর পরিচিতি" },
+        { subj: "Bangla 2nd:", text: "ভাবসম্প্রসারণ ও সারাংশ বা সারমর্ম" }
     ]},
     { date: "Dec 7, 2026 (Mon)", tag: "Priority", tasks: [
-        { subj: "Phy 2nd:", text: "জ্যামিতিক আলোকবিজ্ঞান (Geometrical Optics — Lens, Prism, Optical Instruments)" },
-        { subj: "Bio 1st:", text: "নগ্নবীজী ও আবৃতবীজী + টিস্যু ও টিস্যুতন্ত্র (Concept + CQ)" },
-        { subj: "Bangla 2nd:", text: "সংলাপ বা খুদেগল্প + প্রবন্ধ রচনা (Outline Prep)" }
+        { subj: "Phy 2nd:", text: "জ্যামিতিক আলোকবিজ্ঞান - Lens, Prism and Instruments" },
+        { subj: "Bio 1st:", text: "নগ্নবীজী ও আবৃতবীজী এবং টিস্যু ও টিস্যুতন্ত্র" },
+        { subj: "Bangla 2nd:", text: "সংলাপ বা খুদেগল্প এবং প্রবন্ধ রচনা" }
     ]},
     { date: "Dec 8, 2026 (Tue)", tag: "Priority", tasks: [
-        { subj: "Phy 2nd:", text: "তড়িৎ চুম্বকত্ব ও তড়িৎ আবেশ (Magnetism & Electromagnetic Induction)" },
-        { subj: "Bio 2nd:", text: "শ্বাসক্রিয়া ও শ্বসন + বর্জ্য ও নিষ্কাশন (Respiration & Excretion CQ)" },
-        { subj: "Chem 1st:", text: "ল্যাবরেটরির নিরাপদ ব্যবহার (MCQ + Basic Concept)" }
+        { subj: "Phy 2nd:", text: "তড়িৎ চুম্বকত্ব ও তড়িৎ আবেশ - Concept and CQ" },
+        { subj: "Bio 2nd:", text: "শ্বাসক্রিয়া ও শ্বসন এবং বর্জ্য ও নিষ্কাশন - CQ" },
+        { subj: "Chem 1st:", text: "ল্যাবরেটরির নিরাপদ ব্যবহার - MCQ and Concept" }
     ]},
     { date: "Dec 9, 2026 (Wed)", tag: "Priority", tasks: [
-        { subj: "Phy 2nd:", text: "নিউক্লিয়ার পদার্থবিজ্ঞান ও জ্যোতির্বিজ্ঞান (Nuclear Physics & Astronomy)" },
-        { subj: "Bio 2nd:", text: "চলন ও অঙ্গচালনা + মানবজীবনের ধারাবাহিকতা (Skeletal System & Reproduction)" },
-        { subj: "Phy 1st:", text: "ভৌত জগৎ ও পরিমাপ (Error Calculation & MCQ)" }
+        { subj: "Phy 2nd:", text: "নিউক্লিয়ার পদার্থবিজ্ঞান ও জ্যোতির্বিজ্ঞান" },
+        { subj: "Bio 2nd:", text: "চলন ও অঙ্গচালনা এবং মানবজীবনের ধারাবাহিকতা" },
+        { subj: "Phy 1st:", text: "ভৌত জগৎ ও পরিমাপ - Error and MCQ" }
     ]},
     { date: "Dec 10, 2026 (Thu)", tag: "Priority", tasks: [
         { subj: "Bio 1st:", text: "কোষ রসায়ন, শৈবাল ও ছত্রাক, ব্রায়োফাইটা ও টেরিডোফাইটা" },
-        { subj: "Bio 1st:", text: "উদ্ভিদের প্রজনন + জীবের পরিবেশ, বিস্তার ও সংরক্ষণ" },
-        { subj: "Bio 2nd:", text: "প্রাণীর আচরণ (Animal Behavior — Reflex, Instinct, Pavlov)" }
+        { subj: "Bio 1st:", text: "উদ্ভিদের প্রজনন এবং জীবের পরিবেশ, বিস্তার ও সংরক্ষণ" },
+        { subj: "Bio 2nd:", text: "প্রাণীর আচরণ - Reflex, Instinct and Pavlov" }
     ]},
-
-    // PHASE 2: REVISION 1 & QUESTION BANK SOLVE (Dec 11 - Dec 24)
-    { phase: "Phase 2: Revision 1 + Full Question Bank & Test Paper Solve (Dec 11 – Dec 24)", phaseClass: "", date: "Dec 11, 2026 (Fri)", tag: "Revision 1", tasks: [
-        { subj: "Phy 1st:", text: "Rev 1: ভেক্টর + গতিবিদ্যা + নিউটনিয়ান বলবিদ্যা (Test Paper CQ)" },
-        { subj: "Eng 2nd:", text: "Full Grammar Model Test 1 & 2 (Timed)" }
+    { phase: "Phase 2: Revision 1 + Full Question Bank and Test Paper Solve (Dec 11 - Dec 24)", phaseClass: "", date: "Dec 11, 2026 (Fri)", tag: "Revision 1", tasks: [
+        { subj: "Phy 1st:", text: "Rev 1 - ভেক্টর, গতিবিদ্যা ও নিউটনিয়ান বলবিদ্যা CQ" },
+        { subj: "Eng 2nd:", text: "Full Grammar Model Test 1 and 2" }
     ]},
     { date: "Dec 12, 2026 (Sat)", tag: "Revision 1", tasks: [
-        { subj: "Phy 1st:", text: "Rev 1: কাজ-ক্ষমতা + মহাকর্ষ + পর্যায়বৃত্ত গতি (Test Paper CQ)" },
-        { subj: "Bangla 2nd:", text: "Full ব্যাকরণ বোর্ড প্রশ্ন রিভিশন (2023–2025)" }
+        { subj: "Phy 1st:", text: "Rev 1 - কাজ-ক্ষমতা, মহাকর্ষ ও পর্যায়বৃত্ত গতি CQ" },
+        { subj: "Bangla 2nd:", text: "Full ব্যাকরণ বোর্ড প্রশ্ন রিভিশন" }
     ]},
     { date: "Dec 13, 2026 (Sun)", tag: "Revision 1", tasks: [
-        { subj: "Phy 1st:", text: "Rev 1: পদার্থের গাঠনিক ধর্ম + তরঙ্গ + আদর্শ গ্যাস + ভৌত জগৎ" },
-        { subj: "Bio 1st:", text: "Rev 1: কোষ গঠন + কোষ বিভাজন + অণুজীব (MCQ + CQ)" }
+        { subj: "Phy 1st:", text: "Rev 1 - গাঠনিক ধর্ম, তরঙ্গ, আদর্শ গ্যাস ও ভৌত জগৎ" },
+        { subj: "Bio 1st:", text: "Rev 1 - কোষ গঠন, কোষ বিভাজন ও অণুজীব" }
     ]},
     { date: "Dec 14, 2026 (Mon)", tag: "Revision 1", tasks: [
-        { subj: "Phy 2nd:", text: "Rev 1: তাপগতিবিদ্যা + স্থির তড়িৎ + চল তড়িৎ (Selective CQ Drill)" },
-        { subj: "Bio 1st:", text: "Rev 1: নগ্নবীজী-আবৃতবীজী + টিস্যু + উদ্ভিদ শারীরতত্ত্ব" }
+        { subj: "Phy 2nd:", text: "Rev 1 - তাপগতিবিদ্যা, স্থির তড়িৎ ও চল তড়িৎ CQ" },
+        { subj: "Bio 1st:", text: "Rev 1 - নগ্নবীজী-আবৃতবীজী, টিস্যু ও উদ্ভিদ শারীরতত্ত্ব" }
     ]},
     { date: "Dec 15, 2026 (Tue)", tag: "Revision 1", tasks: [
-        { subj: "Phy 2nd:", text: "Rev 1: ভৌত আলোকবিজ্ঞান + মডার্ন ফিজিক্স + সেমিকন্ডাক্টর" },
-        { subj: "Bio 1st:", text: "Rev 1: জীবপ্রযুক্তি + বাকি অধ্যায়গুলোর MCQ ও গুরুত্বপূর্ণ CQ" }
+        { subj: "Phy 2nd:", text: "Rev 1 - ভৌত আলোকবিজ্ঞান, মডার্ন ও সেমিকন্ডাক্টর" },
+        { subj: "Bio 1st:", text: "Rev 1 - জীবপ্রযুক্তি ও বাকি অধ্যায়ের MCQ এবং CQ" }
     ]},
     { date: "Dec 16, 2026 (Wed)", tag: "Revision 1", tasks: [
-        { subj: "Phy 2nd:", text: "Rev 1: জ্যামিতিক আলোকবিজ্ঞান + চুম্বকত্ব + নিউক্লিয়ার + জ্যোতির্বিজ্ঞান" },
-        { subj: "Eng 2nd:", text: "Writing Part Full Revision (Letter, Report, Paragraph)" }
+        { subj: "Phy 2nd:", text: "Rev 1 - জ্যামিতিক আলোকবিজ্ঞান, চুম্বকত্ব, নিউক্লিয়ার ও জ্যোতির্বিজ্ঞান" },
+        { subj: "Eng 2nd:", text: "Writing Part Full Revision" }
     ]},
     { date: "Dec 17, 2026 (Thu)", tag: "Revision 1", tasks: [
-        { subj: "Chem 1st:", text: "Rev 1: গুণগত রসায়ন + মৌলের পর্যায়বৃত্ত ধর্ম (Board CQ Solve)" },
-        { subj: "Bio 2nd:", text: "Rev 1: প্রাণীর বিভিন্নতা + প্রাণীর পরিচিতি (Hydra, Grasshopper, Rohu)" }
+        { subj: "Chem 1st:", text: "Rev 1 - গুণগত রসায়ন ও পর্যায়বৃত্ত ধর্ম Board CQ" },
+        { subj: "Bio 2nd:", text: "Rev 1 - প্রাণীর বিভিন্নতা ও প্রাণীর পরিচিতি" }
     ]},
     { date: "Dec 18, 2026 (Fri)", tag: "Revision 1", tasks: [
-        { subj: "Chem 1st:", text: "Rev 1: রাসায়নিক পরিবর্তন + কর্মমুখী রসায়ন + ল্যাবরেটরি" },
-        { subj: "Bio 2nd:", text: "Rev 1: পরিপাক ও শোষণ + রক্ত ও সংবহন + শ্বসন + বর্জ্য" }
+        { subj: "Chem 1st:", text: "Rev 1 - রাসায়নিক পরিবর্তন, কর্মমুখী ও ল্যাবরেটরি" },
+        { subj: "Bio 2nd:", text: "Rev 1 - পরিপাক, রক্ত ও সংবহন, শ্বসন ও বর্জ্য" }
     ]},
     { date: "Dec 19, 2026 (Sat)", tag: "Revision 1", tasks: [
-        { subj: "Chem 2nd:", text: "Rev 1: পরিবেশ রসায়ন + পরিমাণগত রসায়ন (Math + CQ)" },
-        { subj: "Bio 2nd:", text: "Rev 1: সমন্বয় ও নিয়ন্ত্রণ + মানবদেহের প্রতিরক্ষা + জিনতত্ত্ব ও বিবর্তন" }
+        { subj: "Chem 2nd:", text: "Rev 1 - পরিবেশ রসায়ন ও পরিমাণগত রসায়ন" },
+        { subj: "Bio 2nd:", text: "Rev 1 - সমন্বয় ও নিয়ন্ত্রণ, প্রতিরক্ষা ও জিনতত্ত্ব" }
     ]},
     { date: "Dec 20, 2026 (Sun)", tag: "Revision 1", tasks: [
-        { subj: "Chem 2nd:", text: "Rev 1: জৈব রসায়ন (All Reactions, Conversions & Board CQ)" },
-        { subj: "Bangla 2nd:", text: "নির্মিতি পার্ট রিভিশন (প্রতিবেদন, দিনলিপি, আবেদনপত্র, সংলাপ)" }
+        { subj: "Chem 2nd:", text: "Rev 1 - জৈব রসায়ন All Reactions and Board CQ" },
+        { subj: "Bangla 2nd:", text: "নির্মিতি পার্ট রিভিশন" }
     ]},
     { date: "Dec 21, 2026 (Mon)", tag: "Revision 1", tasks: [
-        { subj: "Chem 2nd:", text: "Rev 1: তড়িৎ রসায়ন + অর্থনৈতিক রসায়ন (Test Paper CQ)" },
-        { subj: "Bio 2nd:", text: "Rev 1: চলন ও অঙ্গচালনা + ধারাবাহিকতা + প্রাণীর আচরণ" }
+        { subj: "Chem 2nd:", text: "Rev 1 - তড়িৎ রসায়ন ও অর্থনৈতিক রসায়ন" },
+        { subj: "Bio 2nd:", text: "Rev 1 - চলন, ধারাবাহিকতা ও প্রাণীর আচরণ" }
     ]},
     { date: "Dec 22, 2026 (Tue)", tag: "Revision 1", tasks: [
-        { subj: "Mock Exam:", text: "Physics 1st Paper Full CQ + MCQ Self-Exam (2h 35m)" },
-        { subj: "Review:", text: "Mistake Analysis & Weak Formula Fix" }
+        { subj: "Mock Exam:", text: "Physics 1st Paper Full CQ and MCQ Self-Exam" },
+        { subj: "Review:", text: "Mistake Analysis and Weak Formula Fix" }
     ]},
     { date: "Dec 23, 2026 (Wed)", tag: "Revision 1", tasks: [
-        { subj: "Mock Exam:", text: "Physics 2nd Paper Full CQ + MCQ Self-Exam (2h 35m)" },
-        { subj: "Review:", text: "Mistake Analysis & Weak Concept Fix" }
+        { subj: "Mock Exam:", text: "Physics 2nd Paper Full CQ and MCQ Self-Exam" },
+        { subj: "Review:", text: "Mistake Analysis and Weak Concept Fix" }
     ]},
     { date: "Dec 24, 2026 (Thu)", tag: "Revision 1", tasks: [
-        { subj: "Mock Exam:", text: "Chemistry 1st & 2nd Paper Selective CQ Practice" },
-        { subj: "Mock Exam:", text: "Biology 1st & 2nd Paper Diagram & MCQ Drill" }
+        { subj: "Mock Exam:", text: "Chemistry 1st and 2nd Paper Selective CQ Practice" },
+        { subj: "Mock Exam:", text: "Biology 1st and 2nd Paper Diagram and MCQ Drill" }
     ]},
-
-    // PHASE 3: REVISION 2 - FINAL TOUCH & RAPID RECALL (Dec 25 - Jan 4)
-    { phase: "Phase 3: Revision 2 — Rapid Recall & Final Exam Touch (Dec 25 – Jan 4)", phaseClass: "rev", date: "Dec 25, 2026 (Fri)", tag: "Revision 2", tasks: [
-        { subj: "Phy 1st:", text: "Rev 2: All Formula Sheet + Top 5 CQ Chapters Rapid Solve" },
-        { subj: "Eng 2nd:", text: "Rev 2: Grammar Exceptions & Writing Templates" }
+    { phase: "Phase 3: Revision 2 - Rapid Recall and Final Exam Touch (Dec 25 - Jan 4)", phaseClass: "rev", date: "Dec 25, 2026 (Fri)", tag: "Revision 2", tasks: [
+        { subj: "Phy 1st:", text: "Rev 2 - Formula Sheet and Top 5 CQ Chapters" },
+        { subj: "Eng 2nd:", text: "Rev 2 - Grammar Exceptions and Writing Templates" }
     ]},
     { date: "Dec 26, 2026 (Sat)", tag: "Revision 2", tasks: [
-        { subj: "Phy 2nd:", text: "Rev 2: All Formula Sheet + Top 5 CQ Chapters Rapid Solve" },
-        { subj: "Bangla 2nd:", text: "Rev 2: ব্যাকরণ শর্ট নোট + রচনা পয়েন্টস" }
+        { subj: "Phy 2nd:", text: "Rev 2 - Formula Sheet and Top 5 CQ Chapters" },
+        { subj: "Bangla 2nd:", text: "Rev 2 - ব্যাকরণ শর্ট নোট ও রচনা পয়েন্টস" }
     ]},
     { date: "Dec 27, 2026 (Sun)", tag: "Revision 2", tasks: [
-        { subj: "Chem 1st:", text: "Rev 2: Ch 2, 3, 4 Core Math & Trends + Ch 1, 5 MCQ" },
-        { subj: "Eng 2nd:", text: "Rev 2: 1 Full Board Question Paper Solve" }
+        { subj: "Chem 1st:", text: "Rev 2 - Core Math, Trends and Key MCQ" },
+        { subj: "Eng 2nd:", text: "Rev 2 - 1 Full Board Question Paper Solve" }
     ]},
     { date: "Dec 28, 2026 (Mon)", tag: "Revision 2", tasks: [
-        { subj: "Chem 2nd:", text: "Rev 2: Organic Reaction Map + Ch 1, 3, 4 Core Math" },
-        { subj: "Bangla 2nd:", text: "Rev 2: নির্মিতি ফরম্যাট ও বোর্ড এমসিকিউ" }
+        { subj: "Chem 2nd:", text: "Rev 2 - Organic Reaction Map and Core Math" },
+        { subj: "Bangla 2nd:", text: "Rev 2 - নির্মিতি ফরম্যাট ও বোর্ড এমসিকিউ" }
     ]},
     { date: "Dec 29, 2026 (Tue)", tag: "Revision 2", tasks: [
-        { subj: "Bio 1st:", text: "Rev 2: High-Yield CQ Chapters (Ch 1, 2, 4, 7, 8, 9, 11) + Diagrams" },
-        { subj: "Bio 1st:", text: "Remaining Chapters Important MCQ Highlight Review" }
+        { subj: "Bio 1st:", text: "Rev 2 - High-Yield CQ Chapters and Diagrams" },
+        { subj: "Bio 1st:", text: "Remaining Chapters Important MCQ Review" }
     ]},
     { date: "Dec 30, 2026 (Wed)", tag: "Revision 2", tasks: [
-        { subj: "Bio 2nd:", text: "Rev 2: High-Yield CQ Chapters (Ch 1, 2, 3, 4, 8, 10, 11) + Diagrams" },
-        { subj: "Bio 2nd:", text: "Remaining Chapters Important MCQ Highlight Review" }
+        { subj: "Bio 2nd:", text: "Rev 2 - High-Yield CQ Chapters and Diagrams" },
+        { subj: "Bio 2nd:", text: "Remaining Chapters Important MCQ Review" }
     ]},
     { date: "Dec 31, 2026 (Thu)", tag: "Revision 2", tasks: [
-        { subj: "Phy 1st & 2nd:", text: "Final Formula & Graph Revision (Both Papers)" },
-        { subj: "Chem 1st & 2nd:", text: "Final Reactions, Constants & Exceptions Revision" }
+        { subj: "Phy 1st and 2nd:", text: "Final Formula and Graph Revision" },
+        { subj: "Chem 1st and 2nd:", text: "Final Reactions, Constants and Exceptions" }
     ]},
     { date: "Jan 1, 2027 (Fri)", tag: "Final Touch", tasks: [
-        { subj: "All Science:", text: "MCQ Bank Rapid Review (Physics, Chemistry, Biology)" },
-        { subj: "Buffer:", text: "Catch up on any unchecked chapter from checklist" }
+        { subj: "All Science:", text: "MCQ Bank Rapid Review" },
+        { subj: "Buffer:", text: "Catch up on any unchecked chapter" }
     ]},
     { date: "Jan 2, 2027 (Sat)", tag: "Final Touch", tasks: [
-        { subj: "Bangla & Eng:", text: "Final Revision for First Exam Subjects (Grammar + Writing)" },
-        { subj: "Relax:", text: "Light revision only, organize admit card & stationery" }
+        { subj: "Bangla and Eng:", text: "Final Revision for First Exam Subjects" },
+        { subj: "Relax:", text: "Light revision and admit card check" }
     ]},
     { date: "Jan 3, 2027 (Sun)", tag: "Final Touch", tasks: [
-        { subj: "First Exam Prep:", text: "Dedicated full-day revision for the 1st subject on exam routine" }
+        { subj: "First Exam Prep:", text: "Dedicated full-day revision for 1st exam subject" }
     ]},
     { date: "Jan 4, 2027 (Mon)", tag: "Final Touch", tasks: [
-        { subj: "First Exam Prep:", text: "Final touch, key points & early sleep before Test Exam!" }
+        { subj: "First Exam Prep:", text: "Final touch and early sleep before Test Exam" }
     ]}
 ];
 
-const listEl = document.getElementById('routineList');
-let savedState = JSON.parse(localStorage.getItem('hsc_routine_v1') || '{}');
+const listEl = document.getElementById("routineList");
+let savedState = {};
+
+try {
+    savedState = JSON.parse(localStorage.getItem("hsc_routine_v1") || "{}");
+} catch (e) {
+    savedState = {};
+}
 
 function render() {
-    listEl.innerHTML = '';
+    listEl.innerHTML = "";
     let totalTasks = 0;
     let completedTasks = 0;
 
     routineData.forEach((day, dIdx) => {
         if (day.phase) {
-            const pDiv = document.createElement('div');
-            pDiv.className = 'phase-banner ' + (day.phaseClass || '');
+            const pDiv = document.createElement("div");
+            pDiv.className = "phase-banner " + (day.phaseClass || "");
             pDiv.textContent = day.phase;
             listEl.appendChild(pDiv);
         }
 
-        con
+        const card = document.createElement("div");
+        card.className = "day-card";
+
+        let dayDone = true;
+        let tasksHtml = "";
+
+        day.tasks.forEach((t, tIdx) => {
+            const id = "d" + dIdx + "_t" + tIdx;
+            const isChecked = Boolean(savedState[id]);
+            totalTasks++;
+            if (isChecked) completedTasks++;
+            else dayDone = false;
+
+            tasksHtml += '<label class="task-item">' +
+                '<input type="checkbox" id="' + id + '" ' + (isChecked ? "checked" : "") + ' onchange="toggleTask(\'' + id + '\')">' +
+                '<span class="task-text"><span class="subj">' + t.subj + '</span> ' + t.text + '</span>' +
+                '</label>';
+        });
+
+        if (dayDone) card.classList.add("completed");
+
+        let tagClass = "tag-priority";
+        if (day.tag.indexOf("Revision") !== -1) tagClass = "tag-revision";
+        else if (day.tag.indexOf("Final") !== -1) tagClass = "tag-remaining";
+
+        card.innerHTML =
+            '<div class="day-header">' +
+            '<span class="date-title">' + day.date + '</span>' +
+            '<span class="tag ' + tagClass + '">' + day.tag + '</span>' +
+            '</div>' +
+            tasksHtml;
+
+        listEl.appendChild(card);
+    });
+
+    const pct = totalTasks ? Math.round((completedTasks / totalTasks) * 100) : 0;
+    document.getElementById("progressBar").style.width = pct + "%";
+    document.getElementById("progressText").textContent = pct + "% Completed";
+    document.getElementById("taskCount").textContent = completedT
